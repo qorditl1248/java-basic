@@ -21,9 +21,16 @@ public class OrderManager {
     // 주문 목록 (모든 주문 목록 출력)
     public void printAllOrders() {
         for (Order order : orderList) {
-            System.out.println(order);
+            System.out.println(
+                    "주문번호" + order.orderId() +
+                            ", 고객: " + order.customerName() +
+                            ", 총 가격: " + order.totalAmount()
+            );
+            System.out.println("상품 목록: " + order.productList());
         }
     }
+
+    // 형태 맞춰서 반환
 
     // 주문 검색 ("주문 번호를 기준"으로 특정 주문을 검색하는 메서드)
     public Order searchOrder(int orderId){
@@ -40,7 +47,7 @@ public class OrderManager {
     // 상품 이름으로 검색 - searchProduct(String name)
     public Product searchProduct(String name) {
         for(Product product : productList) {
-            if(product.productName().equals(name)) {
+            if(product.productName().equals(name)) { // product가 레코드 형식이여서 equals 오류가 날 수도 있음
                 return product;
             }
         }

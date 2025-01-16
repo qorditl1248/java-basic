@@ -5,6 +5,9 @@
       <module name="core-java-basics" target="23" />
       <module name="core-java-basics.main" target="23" />
       <module name="core-java-basics.test" target="23" />
+      <module name="java-pattern" target="21" />
+      <module name="java-pattern.main" target="21" />
+      <module name="java-pattern.test" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>
