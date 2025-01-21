@@ -9,6 +9,7 @@ import java.util.Map;
  *
  * - Color는 name(색상 이름)을 필드로 가진다
  * - 동일한 색상 이름에 대해 같은 객체를 반환하도록 캐싱을 구현하라
+ *
  */
 
 public class Color {
@@ -16,7 +17,7 @@ public class Color {
     private static final Map<String, Color> colorPool = new HashMap<>();
     private final String colorName;
 
-    public Color(String colorName) {
+    private Color(String colorName) {
         this.colorName = colorName;
     }
 

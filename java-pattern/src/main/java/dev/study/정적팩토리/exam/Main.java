@@ -6,6 +6,9 @@ package dev.study.정적팩토리.exam;
  * - 동물 인터페이스 :  Animal(메서드: speak())
  * - 구현 클래스: Dog, Cat, Bird
  * - AnimalFactory 에서 각 동물 객체를 반환하는 정적 팩토리 메서드를 작성하라.
+ *
+ * 팩토리라는게 하나의 공장을 만드는 것
+ *
  */
 
 interface Animal {
@@ -46,7 +49,6 @@ class AnimalFactory {
         return new Bird();
     }
 }
-
 
 
 public class Main {
