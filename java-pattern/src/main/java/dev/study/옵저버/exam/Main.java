@@ -80,8 +80,9 @@ public class Main {
 
         StockMarket stockMarket = new StockMarket();
 
-        Investor investor1 =  new Investor("Alice");
-        Investor investor2 =  new Investor("Bob");
+        // 우리가 쓸려고 하는건 StockObserver
+        StockObserver investor1 =  new Investor("Alice");
+        StockObserver investor2 =  new Investor("Bob");
 
         stockMarket.addObserver(investor1);
         stockMarket.addObserver(investor2);
