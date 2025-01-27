@@ -26,10 +26,6 @@ public record BookResponse(
         );
     }
 
-    // List 변환
-    public static List<BookResponse> fromBookList(List<Book> books) {
-        return books.stream().map(BookResponse::from).toList();
-    }
 
 
 }

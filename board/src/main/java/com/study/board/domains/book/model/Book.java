@@ -75,6 +75,21 @@ public class Book {
         this.stockQuantity = newQuantity;
     }
 
+    // 책 가격 및 재고 업데이트 부분
+    public void updatePriceAndStock(int price, int quantity) {
+
+        if(quantity < 0) {
+            throw new IllegalArgumentException("재고가 0 보다 작을 순 없습니다.");
+        }
+
+        if(price < 0) {
+            throw new IllegalArgumentException("가격이 0 보다 작을 순 없습니다.");
+        }
+
+        this.price = price;
+        this.stockQuantity = quantity;
+    }
+
 
 
 }

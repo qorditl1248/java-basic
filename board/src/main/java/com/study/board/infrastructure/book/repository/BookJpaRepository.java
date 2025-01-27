@@ -17,15 +17,23 @@ public interface BookJpaRepository extends JpaRepository<BookJpaEntity, Long> {
     Optional<BookJpaEntity> findActiveById(@Param("id") Long id);
 
     // 책 search
-    @Query("SELECT b FROM BookJpaEntity b " +
-            "WHERE (:title IS NULL OR b.title LIKE %:title%)" +
-            "AND (:author IS NULL OR b.author LIKE %:author%)" +
-            "AND (:minPrice IS NULL OR b.price >= :minPrice)" +
-            "AND (:maxPrice IS NULL OR b.price <= :maxPrice)")
-    List<BookJpaEntity> searchByCriteria(
+    @Query("""
+            SELECT b FROM BookJpaEntity b WHERE b.isDeleted = false AND
+            (:title IS NULL OR b.title LIKE %:title%) AND
+            (:author IS NULL OR b.author LIKE %:author%) AND
+            (:minPrice IS NULL OR b.price >= :minPrice) AND
+            (:maxPrice IS NULL OR b.price <= :maxPrice) 
+            """)
+    List<BookJpaEntity> searchBookByCriteria(
             @Param("title") String title,
             @Param("author") String author,
             @Param("minPrice") Integer minPrice,
             @Param("maxPrice") Integer maxPrice
     );
+
+    @Query("""
+            SELECT b FROM BookJpaEntity b WHERE b.isDeleted = false AND
+            (b.author LIKE %:author%)
+           """)
+    BookJpaEntity findByAuthor(@Param("author") String author);
 }

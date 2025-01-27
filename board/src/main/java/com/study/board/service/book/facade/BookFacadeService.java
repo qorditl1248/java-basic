@@ -2,9 +2,12 @@ package com.study.board.service.book.facade;
 
 import com.study.board.api.dto.request.BookRequest;
 import com.study.board.api.dto.request.BookSearchRequest;
+import com.study.board.api.dto.request.BookUpdateRequest;
 import com.study.board.api.dto.response.BookResponse;
 import com.study.board.domains.book.model.Book;
 import com.study.board.service.book.BookService;
+import com.study.board.service.book.dto.BookSearchCriteria;
+import com.study.board.service.book.dto.BookServiceRequest;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +27,7 @@ public class BookFacadeService {
     public BookResponse saveBook(BookRequest request) {
 
         // 클라이언트 요청 데이터(BookRequest)를 서비스 계층에서 사용할 요청 객체(BookServiceRequest)로 변환
-//        Book book = bookService.saveBook(request.toServiceRequest());
-
-        Book book = bookService.saveBook(request);
+        Book book = bookService.saveBook(request.toServiceRequest());
 
         // 서비스 계층에서 반환된 도메인 객체(Book)를 클라이언트 응답 객체(BookResponse)로 변환
         return BookResponse.from(book);
@@ -50,10 +51,22 @@ public class BookFacadeService {
         bookService.deleteBook(id);
     }
 
-    // 여러개로 조회
+    // 이름,저자,가격들 조회
     public List<BookResponse> searchBooks(BookSearchRequest request) {
-        List<Book> books = bookService.searchBooks(request);
-        return BookResponse.fromBookList(books);
+        return bookService.searchBooks(request.toCriteria())
+                .stream()
+                .map(BookResponse::from)
+                .toList();
+    }
+
+    // 가격, 수량 변경
+    public BookResponse updateBookDetails(Long id, BookUpdateRequest request) {
+       return BookResponse.from(bookService.updateById(id, request.toService()));
+    }
+
+    // 저자로 책 조회
+    public BookResponse getBooksByAuthor(String author) {
+        return BookResponse.from(bookService.getBooksByAuthor(author));
     }
 
 

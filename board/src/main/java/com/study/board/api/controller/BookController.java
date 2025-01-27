@@ -2,6 +2,7 @@ package com.study.board.api.controller;
 
 import com.study.board.api.dto.request.BookRequest;
 import com.study.board.api.dto.request.BookSearchRequest;
+import com.study.board.api.dto.request.BookUpdateRequest;
 import com.study.board.api.dto.response.BookResponse;
 import com.study.board.service.book.facade.BookFacadeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,12 +11,14 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/books")
@@ -71,4 +74,24 @@ public class BookController {
         return ResponseEntity.ok(bookFacadeService.searchBooks(request));
     }
 
+
+    // 숙제
+    // 가격이랑 수량 수정할 수 있게
+    @PatchMapping("/{id}")
+    @Operation(summary = "Update book details")
+    public ResponseEntity<BookResponse> updateBookDetails(
+            @PathVariable Long id,
+            @Valid @RequestBody BookUpdateRequest request
+    ){
+        log.info("id: {}", id);
+        log.info("Request JSON: {}", request);
+        return ResponseEntity.ok(bookFacadeService.updateBookDetails(id, request));
+    }
+
+    // 저자 기준으로 책 찾기
+    @GetMapping("/author/{author}")
+    @Operation(summary = "저자 기준으로 책을 찾다")
+    public ResponseEntity<BookResponse> getBooksByAuthor(@PathVariable String author){
+        return ResponseEntity.ok(bookFacadeService.getBooksByAuthor(author));
+    }
 }
