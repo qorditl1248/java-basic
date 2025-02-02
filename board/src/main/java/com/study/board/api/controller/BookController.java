@@ -3,6 +3,7 @@ package com.study.board.api.controller;
 import com.study.board.api.dto.request.BookRequest;
 import com.study.board.api.dto.request.BookSearchRequest;
 import com.study.board.api.dto.request.BookUpdateRequest;
+import com.study.board.api.dto.request.BookWithCategoryRequest;
 import com.study.board.api.dto.response.BookResponse;
 import com.study.board.service.book.facade.BookFacadeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,6 +34,14 @@ public class BookController {
         return ResponseEntity.status(201).body(bookFacadeService.saveBook(request));
     }
 
+    // 카테고리
+    @PostMapping("/category")
+    @Operation(summary = "책 등록", description = "카테고리 포함된 책 등록")
+    public ResponseEntity<BookResponse> createBookWithCategory(@Valid @RequestBody BookWithCategoryRequest request) {
+        return ResponseEntity.ok(bookFacadeService.createBookWithCategory(request));
+    }
+
+
     @GetMapping("/{id}") // ? - requestParam, @PathVariable
     @Operation(summary = "Get Book by Id", description = "책 상세 정보를 아이디 값 기준으로 가져온다")
     public ResponseEntity<BookResponse> getBookById(
@@ -59,8 +68,6 @@ public class BookController {
         bookFacadeService.deleteBook(id);
     }
 
-
-    // 숙제
     // null, or, like 절
     @GetMapping("/search")
     @Operation(summary = "Search books by criteria")
@@ -74,8 +81,6 @@ public class BookController {
         return ResponseEntity.ok(bookFacadeService.searchBooks(request));
     }
 
-
-    // 숙제
     // 가격이랑 수량 수정할 수 있게
     @PatchMapping("/{id}")
     @Operation(summary = "Update book details")
@@ -90,8 +95,10 @@ public class BookController {
 
     // 저자 기준으로 책 찾기
     @GetMapping("/author/{author}")
-    @Operation(summary = "저자 기준으로 책을 찾다")
-    public ResponseEntity<BookResponse> getBooksByAuthor(@PathVariable String author){
+    @Operation(summary = "저자 기준으로 책을 찾는다")
+    public ResponseEntity<List<BookResponse>> getBooksByAuthor(
+            @PathVariable String author
+    ) {
         return ResponseEntity.ok(bookFacadeService.getBooksByAuthor(author));
     }
 }

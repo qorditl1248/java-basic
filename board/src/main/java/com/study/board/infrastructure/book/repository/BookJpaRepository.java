@@ -35,5 +35,7 @@ public interface BookJpaRepository extends JpaRepository<BookJpaEntity, Long> {
             SELECT b FROM BookJpaEntity b WHERE b.isDeleted = false AND
             (b.author LIKE %:author%)
            """)
-    BookJpaEntity findByAuthor(@Param("author") String author);
+    List<BookJpaEntity> findByAuthor(@Param("author") String author);
+
+    boolean existsByIsbnAndIsDeletedFalse(String isbn);
 }

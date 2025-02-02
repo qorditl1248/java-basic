@@ -5,7 +5,6 @@ import com.study.board.infrastructure.book.entity.BookJpaEntity;
 import com.study.board.infrastructure.book.repository.BookJpaRepository;
 import com.study.board.service.book.dto.BookServiceRequest;
 import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.proxy.EntityNotFoundDelegate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

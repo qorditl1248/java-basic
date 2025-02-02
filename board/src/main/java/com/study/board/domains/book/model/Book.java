@@ -4,6 +4,8 @@ import com.study.board.infrastructure.book.entity.BookJpaEntity;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Optional;
+
 /**
  * 도메인 객체, 엔티티 객체
  *
@@ -29,11 +31,15 @@ public class Book {
     private int stockQuantity;
     private boolean isDeleted;
 
+    // book이 카테고리를 가지고 있어야 찾을 수 있음
+    private Category category;
+
     // 정적팩토리메소드로 만들기 위해서 생성자 접근 못하게 private
     private Book(Long id, String title,
                  String author, String isbn,
                  int price, int stockQuantity,
-                 boolean isDeleted) {
+                 boolean isDeleted, Category category) {
+        validateFields(title, author, isbn, price, stockQuantity); // 생성될 동시에 체크해줌
         this.id = id;
         this.title = title;
         this.author = author;
@@ -41,16 +47,39 @@ public class Book {
         this.price = price;
         this.stockQuantity = stockQuantity;
         this.isDeleted = isDeleted;
+        this.category = category;
     }
 
+    private static void validateFields(String title, String author,
+                                       String isbn, int price, int stockQuantity) {
+        if(title == null || title.isBlank()) {
+            throw new IllegalArgumentException("제목은 필수입니다.");
+        }
+        if(author == null || author.isBlank()) {
+            throw new IllegalArgumentException("저자는 필수입니다.");
+        }
+        if(isbn == null || isbn.isBlank()) {
+            throw new IllegalArgumentException("isbn은 필수입니다.");
+        }
+        if(price < 0) {
+            throw new IllegalArgumentException("가격은 0보다 작을 수 없습니다.");
+        }
+        if(stockQuantity < 0) {
+            throw new IllegalArgumentException("재고는 0보다 작을 수 없습니다.");
+        }
+    }
+
+
+
     // 정적팩토리 메서드 하나 생성
-    public static Book create(String title, String author, String isbn, int price, int stockQuantity) {
+    public static Book create(String title, String author, String isbn, int price, int stockQuantity, Category category) {
         return Book.builder()
                 .title(title)
                 .author(author)
                 .isbn(isbn)
                 .price(price)
                 .stockQuantity(stockQuantity)
+                .category(category)
                 .build();
     }
 
@@ -66,7 +95,7 @@ public class Book {
                 .build();
     }
 
-    // 도메인 로직, 비지니스 로직
+    // 도메인 로직, 비지니스 로직, 수량 업데이트 부분
     public void updateStock(int quantity) {
         int newQuantity = this.stockQuantity + quantity;
         if(newQuantity < 0) {
@@ -75,21 +104,14 @@ public class Book {
         this.stockQuantity = newQuantity;
     }
 
-    // 책 가격 및 재고 업데이트 부분
-    public void updatePriceAndStock(int price, int quantity) {
-
-        if(quantity < 0) {
-            throw new IllegalArgumentException("재고가 0 보다 작을 순 없습니다.");
-        }
+    // 책 가격 업데이트 부분
+    public void updatePrice(int price) {
 
         if(price < 0) {
             throw new IllegalArgumentException("가격이 0 보다 작을 순 없습니다.");
         }
 
         this.price = price;
-        this.stockQuantity = quantity;
     }
-
-
 
 }

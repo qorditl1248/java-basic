@@ -35,6 +35,10 @@ public class BookJpaEntity extends BaseEntity {
     @Column(nullable = false)
     private Integer stockQuantity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private CategoryJpaEntity category;
+
     // Book 도메인 객체를 entity 객체로 변환하는 거
     public static BookJpaEntity from(Book book) {
         BookJpaEntity entity = new BookJpaEntity();
